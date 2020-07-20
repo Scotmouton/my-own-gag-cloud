@@ -1,0 +1,61 @@
+server:
+  port: 9101
+
+spring:
+  application:
+    name: GaG-Auth
+  redis:
+    database: 9
+    host: 192.168.3.246
+    port: 6379
+#    password: guo4883628
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+  datasource:
+    dynamic:
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: GaGHikariCP
+      primary: base
+      datasource:
+        base:
+          username: root
+          password: Aa@123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://192.168.7.20:3306/gag_test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+#  eureka.instance.lease-renewal-interval-in-seconds，向Eureka 服务端发送心跳的间隔时间，单位为秒，用于服务续约。
+#  这里配置为20秒，即每隔20秒向febs-register发送心跳，表明当前服务没有宕机；
+#  eureka.client.register-with-eureka，为true时表示将当前服务注册到eureka服务端；
+#  eureka.client.fetch-registry，为true时表示从Eureka 服务端获取注册的服务信息；
+#  eureka.client.instance-info-replication-interval-seconds，新实例信息的变化到Eureka服务端的间隔时间，单位为秒；
+#  eureka.client.registry-fetch-interval-seconds，默认值为30秒，即每30秒去Eureka服务端上获取服务并缓存，
+#  这里指定为3秒的原因是方便开发时测试，实际可以指定为默认值即可；
+#  eureka.client.serviceUrl.defaultZone，指定Eureka服务端地址。
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 20
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance-info-replication-interval-seconds: 30
+    registry-fetch-interval-seconds: 3
+    serviceUrl:
+      defaultZone: http://gag:123456@localhost:9001/register/eureka/
+
+mybatis-plus:
+  type-aliases-package: com.gag.common.entity.system
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    banner: false
+
